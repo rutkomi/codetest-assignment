@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  webapp:
+    build: ./web-app
+    networks:
+      - codetest-assignment
+    ports:
+      - "8282:8080"
+  integration-test:
+    build: ./integration-test
+    depends_on:
+      - webapp
+    networks:
+      - codetest-assignment
+
+networks:
+  codetest-assignment:
+

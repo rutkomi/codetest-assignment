@@ -1,0 +1,72 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                dir('codetest') {
+                    echo 'Checkout'
+                    git branch: 'master', url: 'https://github.com/24mx/codetest.git'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir('codetest') {
+                    echo 'Build - mvn install'
+                    sh 'mvn install'
+                }
+            }
+        }
+        stage('Checkout codetest assignment') {
+            steps {
+                dir('codetest-assignment') {
+                    echo 'Checkout assignment'
+                    git branch: 'master', url: 'https://github.com/rutkomi/codetest-assignment.git'
+                }
+            }
+        }
+        stage('cp artifact') {
+            steps {
+                sh "cp codetest/blog-web/target/blog-web.war codetest-assignment/app/docker/web-app/blog-web.war"
+            }
+        }
+        
+        stage('Docker build and run - docker-compose - run containers, run maven test') {
+            steps {
+                dir('codetest-assignment/app/docker') {
+                    echo 'docker-compose up'
+                    sh "docker-compose up --build --abort-on-container-exit"
+                }
+            }
+        }
+        /*
+        stage('Finish') {
+            input {
+                message "Next step, clearing... Should we continue?"
+                ok "Yes..."
+            }
+            steps {
+                echo 'Cleaning...'
+            }
+        }
+        */
+        stage('docker-compose down') {
+            steps {
+                dir('codetest-assignment/app/docker') {
+                    echo 'docker-compose up'
+                    sh "docker-compose down -v"
+                }
+            }
+        }
+        stage('End') {
+            steps {
+                echo 'Success'
+            }
+        }
+    }
+    post { 
+        always { 
+            cleanWs()
+        }
+    }
+}
