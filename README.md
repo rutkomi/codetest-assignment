@@ -1,11 +1,20 @@
 ### Prerequisites
 - Linux
   - docker and docker-compose installed
+  or
+  - vagrant and virtualbox installed
+
+- Windows or MacOS
+  - vagrant and virtualbox installed
 
 ### Starting
 - Linux
   - Run command: `docker-compose -f jenkins/docker-compose.yml up -d --build`
+  or
+  - vagrant up
 
+- Windows and MacOS
+  - vagrant up
 
 ### Running
 - In order to run the blog-web app docker container and second docker contanier for the integration test, follow this steps:
@@ -17,4 +26,9 @@
 
 ### Troubleshooting
 - If something goes wrong, you can easily clean up everything like this:
-`docker-compose -f app/docker/docker-compose.yml down -v; docker-compose -f jenkins/docker-compose.yml down -v`
+  - Linux
+    - `docker-compose -f app/docker/docker-compose.yml down -v; docker-compose -f jenkins/docker-compose.yml down -v`
+  - Windows or MacOS
+    - `vagrant destory`
+    or
+    - `vagrant ssh` and `docker-compose -f app/docker/docker-compose.yml down -v; docker-compose -f jenkins/docker-compose.yml down -v`
