@@ -1,8 +1,7 @@
 ### Prerequisites
 - Linux
   - docker and docker-compose installed
-  or
-  - vagrant and virtualbox installed
+  - or vagrant and virtualbox installed
 
 - Windows or MacOS
   - vagrant and virtualbox installed
