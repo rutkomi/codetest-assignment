@@ -1,0 +1,71 @@
+--- 
+-
+  hosts: all
+  tasks:
+    -
+      name: Install packages
+      apt:
+        name: "{{ packages }}"
+        update_cache: yes
+        state: present
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+      register: install_packages
+    -
+      debug:
+        var: install_packages
+
+    -
+      name: Get apt-key
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    -
+      name: Add docker apt repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    -
+      name: Install docker
+      apt:
+        name: "{{ packages }}"
+        update_cache: yes
+        state: present
+      vars:
+        packages:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+      register: install_docker
+    -
+      debug:
+        var: install_docker
+
+    -
+      name: Check if docker-compose exists
+      stat:
+        path: /usr/local/bin/docker-compose
+      register: docker_compose_exists
+    -
+      name: Get and install docker-compose
+      shell: curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      when: docker_compose_exists.stat.exists == False
+    -
+      name: Set docker-compose +x
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    -
+      name: Build and run jenkins container
+      shell:
+        cmd: docker-compose -f jenkins/docker-compose.yml up -d --build
+        chdir: /vagrant
+      register: build_and_run_jenkins_container
+    -
+      debug:
+        var: build_and_run_jenkins_container
+
