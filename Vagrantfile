@@ -16,10 +16,11 @@ Vagrant.configure("2") do |config|
     v.memory = "4096"
   end
 
-  config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "playbook.yml"
-    ansible.verbose = true
-    ansible.become = true
-  end
-
+  #config.vm.provision "ansible_local" do |ansible|
+  #  ansible.playbook = "playbook.yml"
+  #  ansible.verbose = true
+  #  ansible.become = true
+  #end
+  config.vm.provision :shell, path: "bootstrap.sh"
+  
 end
