@@ -10,11 +10,10 @@
 ### Starting
 - Linux
   - Run command: `docker-compose -f jenkins/docker-compose.yml up -d --build`
-  or
-  - vagrant up
+  - or if you would like to use vagrant, run command: `vagrant up`
 
 - Windows and MacOS
-  - vagrant up
+  - Run command: `vagrant up`
 
 ### Running
 - In order to run the blog-web app docker container and second docker contanier for the integration test, follow this steps:
@@ -30,5 +29,4 @@
     - `docker-compose -f app/docker/docker-compose.yml down -v; docker-compose -f jenkins/docker-compose.yml down -v`
   - Windows or MacOS
     - `vagrant destory`
-    or
-    - `vagrant ssh` and `docker-compose -f app/docker/docker-compose.yml down -v; docker-compose -f jenkins/docker-compose.yml down -v`
+    - or you can log in to vm `vagrant ssh` and run e.g. `docker-compose -f app/docker/docker-compose.yml down -v; docker-compose -f jenkins/docker-compose.yml down -v`
