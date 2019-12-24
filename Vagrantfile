@@ -21,6 +21,6 @@ Vagrant.configure("2") do |config|
   #  ansible.verbose = true
   #  ansible.become = true
   #end
-  config.vm.provision :shell, path: "bootstrap.sh"
+  config.vm.provision "shell", path: "bootstrap.sh"
   
 end
